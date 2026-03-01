@@ -1,0 +1,14 @@
+//
+//  AppIntent.swift
+//  oshikatsu-folder
+//
+//  Created by maro on 2026/03/01.
+//
+
+import Foundation
+
+/// ユーザーの意図・アクションを定義
+enum AppIntent {
+    // 今後のアクションをここに追加していく
+    case idle
+}
