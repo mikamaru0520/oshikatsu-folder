@@ -31,6 +31,11 @@ class AppStore: ObservableObject {
             updateState { state in
                 state.selectedOshi = nil
             }
+        case .addOshi(let name, let mainImageName, let imageType):
+            updateState { state in
+                let newOshi = Oshi(name: name, mainImageName: mainImageName, imageType: imageType, photos: [])
+                state.oshiList.append(newOshi)
+            }
         }
     }
 

@@ -12,4 +12,5 @@ enum AppIntent {
     case idle
     case selectOshi(Oshi)
     case deselectOshi
+    case addOshi(name: String, mainImageName: String, imageType: ImageType)
 }

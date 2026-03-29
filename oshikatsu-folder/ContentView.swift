@@ -9,30 +9,32 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var store: AppStore
+    @State private var showingRegisterSheet = false
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
-                // タイトル
-                VStack(spacing: 8) {
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.pink)
-                    Text("推し活アプリ")
-                        .font(.title)
-                        .fontWeight(.bold)
+            ZStack {
+                // メインコンテンツ
+                VStack(spacing: 0) {
+                    // カルーセル
+                    OshiCarouselView(
+                        oshiList: store.state.oshiList,
+                        onTap: { oshi in
+                            store.send(.selectOshi(oshi))
+                        }
+                    )
                 }
-                .padding(.top)
+                .padding(.top, 20)
+                .padding(.bottom, 80) // 下部メニュー分のスペースを確保
 
-                // カルーセル
-                OshiCarouselView(
-                    oshiList: store.state.oshiList,
-                    onTap: { oshi in
-                        store.send(.selectOshi(oshi))
-                    }
-                )
-
-                Spacer()
+                // 下部メニューバー
+                VStack {
+                    Spacer()
+                    BottomMenuBar(onRegisterTap: {
+                        showingRegisterSheet = true
+                    })
+                }
+                .ignoresSafeArea(edges: .bottom)
             }
             .navigationDestination(item: Binding(
                 get: { store.state.selectedOshi },
@@ -43,6 +45,10 @@ struct ContentView: View {
                 }
             )) { oshi in
                 OshiDetailView(oshi: oshi)
+            }
+            .sheet(isPresented: $showingRegisterSheet) {
+                OshiRegisterView()
+                    .environmentObject(store)
             }
         }
     }

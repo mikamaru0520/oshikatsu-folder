@@ -17,11 +17,19 @@ struct OshiDetailView: View {
             VStack(spacing: 24) {
                 // ヘッダー
                 VStack(spacing: 12) {
-                    Image(systemName: oshi.mainImageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 120, height: 120)
-                        .foregroundColor(.pink)
+                    if oshi.imageType == .photo, let image = ImageManager.loadImage(fileName: oshi.mainImageName) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 150, height: 150)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                    } else {
+                        Image(systemName: oshi.mainImageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 120, height: 120)
+                            .foregroundColor(.pink)
+                    }
 
                     Text(oshi.name)
                         .font(.largeTitle)
