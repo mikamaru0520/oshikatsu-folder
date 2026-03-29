@@ -12,13 +12,25 @@ import Combine
 /// Intent を受け取り、State を更新する
 @MainActor
 class AppStore: ObservableObject {
-    @Published private(set) var state: AppState = AppState()
+    @Published private(set) var state: AppState
+
+    init(initialState: AppState = AppState()) {
+        self.state = initialState
+    }
 
     /// Intent を処理して状態を更新
     func send(_ intent: AppIntent) {
         switch intent {
         case .idle:
             break
+        case .selectOshi(let oshi):
+            updateState { state in
+                state.selectedOshi = oshi
+            }
+        case .deselectOshi:
+            updateState { state in
+                state.selectedOshi = nil
+            }
         }
     }
 

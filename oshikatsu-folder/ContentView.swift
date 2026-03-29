@@ -11,18 +11,44 @@ struct ContentView: View {
     @EnvironmentObject var store: AppStore
 
     var body: some View {
-        VStack {
-            Image(systemName: "star.fill")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("推し活アプリ")
-                .font(.title)
+        NavigationStack {
+            VStack(spacing: 24) {
+                // タイトル
+                VStack(spacing: 8) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 40))
+                        .foregroundStyle(.pink)
+                    Text("推し活アプリ")
+                        .font(.title)
+                        .fontWeight(.bold)
+                }
+                .padding(.top)
+
+                // カルーセル
+                OshiCarouselView(
+                    oshiList: store.state.oshiList,
+                    onTap: { oshi in
+                        store.send(.selectOshi(oshi))
+                    }
+                )
+
+                Spacer()
+            }
+            .navigationDestination(item: Binding(
+                get: { store.state.selectedOshi },
+                set: { newValue in
+                    if newValue == nil {
+                        store.send(.deselectOshi)
+                    }
+                }
+            )) { oshi in
+                OshiDetailView(oshi: oshi)
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(AppStore())
+        .environmentObject(AppStore(initialState: AppState.preview))
 }

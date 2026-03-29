@@ -9,6 +9,7 @@ import Foundation
 
 /// ユーザーの意図・アクションを定義
 enum AppIntent {
-    // 今後のアクションをここに追加していく
     case idle
+    case selectOshi(Oshi)
+    case deselectOshi
 }
