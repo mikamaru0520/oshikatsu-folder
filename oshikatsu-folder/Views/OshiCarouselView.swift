@@ -16,13 +16,13 @@ struct OshiCarouselView: View {
     var body: some View {
         if oshiList.isEmpty {
             // 推しが登録されていない場合
-            VStack(spacing: 20) {
+            VStack(spacing: AppSpacing.lg) {
                 Image(systemName: "photo.on.rectangle.angled")
                     .font(.system(size: 80))
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColors.textSecondary)
                 Text("推しを登録してください")
                     .font(.headline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColors.textSecondary)
             }
             .frame(height: 400)
         } else {
@@ -42,15 +42,15 @@ struct OshiCarouselView: View {
                     .frame(height: geometry.size.height - 40)
 
                     // カスタムページインジケーター
-                    HStack(spacing: 8) {
+                    HStack(spacing: AppSpacing.xs) {
                         ForEach(0..<oshiList.count, id: \.self) { index in
                             Circle()
-                                .fill(currentIndex == index ? Color.pink : Color.gray.opacity(0.3))
-                                .frame(width: 8, height: 8)
+                                .fill(currentIndex == index ? AppColors.primary : AppColors.textSecondary.opacity(0.3))
+                                .frame(width: AppSpacing.xs, height: AppSpacing.xs)
                                 .animation(.easeInOut(duration: 0.2), value: currentIndex)
                         }
                     }
-                    .padding(.vertical, 8)
+                    .padding(.vertical, AppSpacing.xs)
                     .frame(height: 40)
                 }
             }
@@ -75,38 +75,34 @@ struct OshiCardView: View {
                 } else {
                     // アイコンの場合は背景色付きで表示
                     ZStack {
-                        Color.pink.opacity(0.1)
+                        AppColors.primaryLight
 
                         Image(systemName: oshi.mainImageName)
                             .resizable()
                             .scaledToFit()
                             .frame(width: min(geometry.size.width * 0.5, 250))
-                            .foregroundColor(.pink)
+                            .foregroundColor(AppColors.primary)
                     }
                 }
 
                 // 下部にテキスト情報をオーバーレイ
-                VStack(spacing: 8) {
+                VStack(spacing: AppSpacing.xs) {
                     Text(oshi.name)
-                        .font(.system(size: 36, weight: .bold))
-                        .foregroundColor(.white)
-                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 2)
+                        .font(AppTypography.hero())
+                        .foregroundColor(AppColors.textWhite)
+                        .textShadow()
 
                     Text("\(oshi.photos.count)枚の写真")
-                        .font(.title3)
-                        .foregroundColor(.white.opacity(0.9))
-                        .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 1)
+                        .font(AppTypography.title3())
+                        .foregroundColor(AppColors.textWhite.opacity(0.9))
+                        .textShadow()
                 }
-                .padding(.bottom, 40)
+                .padding(.bottom, AppSpacing.xxxl)
                 .frame(maxWidth: .infinity)
                 .background(
-                    LinearGradient(
-                        colors: [.clear, .black.opacity(0.6)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .frame(height: 200)
-                    .frame(maxHeight: .infinity, alignment: .bottom)
+                    AppColors.gradientOverlay
+                        .frame(height: 200)
+                        .frame(maxHeight: .infinity, alignment: .bottom)
                 )
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
