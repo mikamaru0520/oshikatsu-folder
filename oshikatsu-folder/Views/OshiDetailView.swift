@@ -14,49 +14,49 @@ struct OshiDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack(spacing: AppSpacing.xl) {
                 // ヘッダー
-                VStack(spacing: 12) {
+                VStack(spacing: AppSpacing.sm) {
                     if oshi.imageType == .photo, let image = ImageManager.loadImage(fileName: oshi.mainImageName) {
                         Image(uiImage: image)
                             .resizable()
                             .scaledToFill()
                             .frame(width: 150, height: 150)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .clipShape(RoundedRectangle(cornerRadius: AppShape.cornerRadiusLg))
                     } else {
                         Image(systemName: oshi.mainImageName)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 120, height: 120)
-                            .foregroundColor(.pink)
+                            .foregroundColor(AppColors.primary)
                     }
 
                     Text(oshi.name)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+                        .font(AppTypography.largeTitle())
+                        .foregroundColor(AppColors.textPrimary)
 
                     Text("\(oshi.photos.count)枚の写真")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .font(AppTypography.subheadline())
+                        .foregroundColor(AppColors.textSecondary)
                 }
-                .padding(.top)
+                .padding(.top, AppSpacing.lg)
 
                 // フォトギャラリー
                 if oshi.photos.isEmpty {
-                    VStack(spacing: 16) {
+                    VStack(spacing: AppSpacing.lg) {
                         Image(systemName: "photo.on.rectangle.angled")
                             .font(.system(size: 60))
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppColors.textSecondary)
                         Text("まだ写真が登録されていません")
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppColors.textSecondary)
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 60)
+                    .padding(.vertical, AppSpacing.xxxl)
                 } else {
                     PhotoGalleryView(photos: oshi.photos)
                 }
             }
-            .padding()
+            .padding(AppSpacing.lg)
         }
         .navigationTitle(oshi.name)
         .navigationBarTitleDisplayMode(.inline)

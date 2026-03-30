@@ -12,47 +12,30 @@ struct BottomMenuBar: View {
     let onRegisterTap: () -> Void
 
     var body: some View {
-        HStack {
-            Spacer()
+        DSGlassContainer(padding: 0, cornerRadius: 0, intensity: .medium) {
+            HStack {
+                Spacer()
 
-            // 登録ボタン
-            Button(action: onRegisterTap) {
-                VStack(spacing: 8) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 32))
-                        .foregroundColor(.pink)
+                // 登録ボタン
+                Button(action: onRegisterTap) {
+                    VStack(spacing: AppSpacing.xs) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 32))
+                            .foregroundColor(AppColors.primary)
 
-                    Text("推しを登録")
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundColor(.primary)
+                        Text("推しを登録")
+                            .font(AppTypography.caption())
+                            .fontWeight(.medium)
+                            .foregroundColor(AppColors.textPrimary)
+                    }
+                    .padding(.vertical, AppSpacing.sm)
+                    .padding(.horizontal, AppSpacing.xl)
                 }
-                .padding(.vertical, 12)
-                .padding(.horizontal, 24)
-            }
 
-            Spacer()
+                Spacer()
+            }
+            .frame(height: 80)
         }
-        .frame(height: 80)
-        .background(
-            // グラスモーフィズム効果
-            ZStack {
-                // ぼかし背景
-                Rectangle()
-                    .fill(.ultraThinMaterial)
-
-                // グラデーションオーバーレイ
-                LinearGradient(
-                    colors: [
-                        Color.white.opacity(0.7),
-                        Color.white.opacity(0.3)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .blendMode(.overlay)
-            }
-        )
         .overlay(
             // 上部の境界線
             Rectangle()
@@ -69,7 +52,7 @@ struct BottomMenuBar: View {
                 .frame(height: 1),
             alignment: .top
         )
-        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: -5)
+        .lightShadow(radius: 10, y: -5)
     }
 }
 

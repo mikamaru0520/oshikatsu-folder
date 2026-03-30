@@ -39,56 +39,53 @@ struct OshiRegisterView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 32) {
+                VStack(spacing: AppSpacing.xxl) {
                     // プレビュー
-                    VStack(spacing: 16) {
+                    VStack(spacing: AppSpacing.lg) {
                         if let image = selectedImage {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 150, height: 150)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                .clipShape(RoundedRectangle(cornerRadius: AppShape.cornerRadiusLg))
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.pink, lineWidth: 3)
+                                    RoundedRectangle(cornerRadius: AppShape.cornerRadiusLg)
+                                        .stroke(AppColors.primary, lineWidth: 3)
                                 )
                         } else {
                             Image(systemName: selectedIcon)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 100, height: 100)
-                                .foregroundColor(.pink)
-                                .padding()
+                                .foregroundColor(AppColors.primary)
+                                .padding(AppSpacing.lg)
                                 .background(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .fill(Color.pink.opacity(0.1))
+                                    RoundedRectangle(cornerRadius: AppShape.cornerRadiusLg)
+                                        .fill(AppColors.primaryLight)
                                 )
                         }
 
                         Text(oshiName.isEmpty ? "推し名を入力してください" : oshiName)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(oshiName.isEmpty ? .gray : .primary)
+                            .font(AppTypography.title2())
+                            .foregroundColor(oshiName.isEmpty ? AppColors.textSecondary : AppColors.textPrimary)
                     }
-                    .padding(.top, 32)
+                    .padding(.top, AppSpacing.xxl)
 
                     // 名前入力
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: AppSpacing.sm) {
                         Text("推しの名前")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
+                            .font(AppTypography.headline())
+                            .foregroundColor(AppColors.textSecondary)
 
-                        TextField("例：〇〇ちゃん", text: $oshiName)
-                            .textFieldStyle(.roundedBorder)
-                            .font(.body)
+                        DSTextField("例：〇〇ちゃん", text: $oshiName, icon: "person.fill")
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, AppSpacing.lg)
 
                     // 画像選択モード切り替え
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: AppSpacing.sm) {
                         Text("画像の選択方法")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
+                            .font(AppTypography.headline())
+                            .foregroundColor(AppColors.textSecondary)
 
                         Picker("画像選択", selection: $imageSelectionMode) {
                             Text("写真から選択").tag(ImageSelectionMode.photo)
@@ -102,23 +99,23 @@ struct OshiRegisterView: View {
                             }
                         }
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, AppSpacing.lg)
 
                     // 写真選択
                     if imageSelectionMode == .photo {
-                        VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
                             PhotosPicker(selection: $selectedImageItem, matching: .images) {
                                 HStack {
                                     Image(systemName: "photo.on.rectangle")
-                                        .font(.title2)
+                                        .font(AppTypography.title2())
                                     Text("写真を選択")
-                                        .font(.headline)
+                                        .font(AppTypography.headline())
                                 }
                                 .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.pink.opacity(0.1))
-                                .foregroundColor(.pink)
-                                .cornerRadius(12)
+                                .padding(AppSpacing.lg)
+                                .background(AppColors.primaryLight)
+                                .foregroundColor(AppColors.primary)
+                                .cornerRadius(AppShape.cornerRadiusMd)
                             }
                             .onChange(of: selectedImageItem) { oldValue, newValue in
                                 Task {
@@ -129,15 +126,15 @@ struct OshiRegisterView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal)
+                        .padding(.horizontal, AppSpacing.lg)
                     }
 
                     // アイコン選択
                     if imageSelectionMode == .icon {
-                        VStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
                             Text("アイコンを選択")
-                                .font(.headline)
-                                .foregroundColor(.secondary)
+                                .font(AppTypography.headline())
+                                .foregroundColor(AppColors.textSecondary)
 
                             LazyVGrid(
                                 columns: [
@@ -146,7 +143,7 @@ struct OshiRegisterView: View {
                                     GridItem(.flexible()),
                                     GridItem(.flexible())
                                 ],
-                                spacing: 16
+                                spacing: AppSpacing.lg
                             ) {
                                 ForEach(iconOptions, id: \.self) { icon in
                                     Button(action: {
@@ -154,17 +151,17 @@ struct OshiRegisterView: View {
                                     }) {
                                         Image(systemName: icon)
                                             .font(.system(size: 32))
-                                            .foregroundColor(selectedIcon == icon ? .white : .pink)
+                                            .foregroundColor(selectedIcon == icon ? AppColors.textWhite : AppColors.primary)
                                             .frame(width: 70, height: 70)
                                             .background(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .fill(selectedIcon == icon ? Color.pink : Color.pink.opacity(0.1))
+                                                RoundedRectangle(cornerRadius: AppShape.cornerRadiusMd)
+                                                    .fill(selectedIcon == icon ? AppColors.primary : AppColors.primaryLight)
                                             )
                                     }
                                 }
                             }
                         }
-                        .padding(.horizontal)
+                        .padding(.horizontal, AppSpacing.lg)
                     }
 
                     Spacer(minLength: 100)

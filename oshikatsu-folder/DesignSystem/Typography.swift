@@ -35,6 +35,12 @@ struct AppTypography {
     /// キャプション（12pt）
     static let caption: CGFloat = 12
 
+    /// サブヘッドライン（15pt）
+    static let subheadline: CGFloat = 15
+
+    /// ヘッドライン（17pt）
+    static let headline: CGFloat = 17
+
     // MARK: - Font Weights
 
     /// 通常
@@ -81,5 +87,15 @@ struct AppTypography {
     /// キャプションスタイル
     static func caption(_ weight: Font.Weight = .regular) -> Font {
         .system(size: caption, weight: weight)
+    }
+
+    /// サブヘッドラインスタイル
+    static func subheadline(_ weight: Font.Weight = .regular) -> Font {
+        .system(size: subheadline, weight: weight)
+    }
+
+    /// ヘッドラインスタイル
+    static func headline(_ weight: Font.Weight = .semibold) -> Font {
+        .system(size: headline, weight: weight)
     }
 }

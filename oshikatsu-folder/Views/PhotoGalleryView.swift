@@ -12,24 +12,24 @@ struct PhotoGalleryView: View {
     let photos: [Photo]
 
     private let columns = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12)
+        GridItem(.flexible(), spacing: AppSpacing.sm),
+        GridItem(.flexible(), spacing: AppSpacing.sm),
+        GridItem(.flexible(), spacing: AppSpacing.sm)
     ]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: AppSpacing.lg) {
             Text("フォトギャラリー")
-                .font(.title2)
-                .fontWeight(.bold)
-                .padding(.horizontal)
+                .font(AppTypography.title2())
+                .foregroundColor(AppColors.textPrimary)
+                .padding(.horizontal, AppSpacing.lg)
 
-            LazyVGrid(columns: columns, spacing: 12) {
+            LazyVGrid(columns: columns, spacing: AppSpacing.sm) {
                 ForEach(photos) { photo in
                     PhotoItemView(photo: photo)
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, AppSpacing.lg)
         }
     }
 }
@@ -39,32 +39,32 @@ struct PhotoItemView: View {
     let photo: Photo
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: AppSpacing.xs) {
             // 写真のサムネイル
             Image(systemName: photo.imageName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 100, height: 100)
-                .foregroundColor(.pink)
-                .padding()
+                .foregroundColor(AppColors.primary)
+                .padding(AppSpacing.md)
                 .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.pink.opacity(0.1))
+                    RoundedRectangle(cornerRadius: AppShape.cornerRadiusMd)
+                        .fill(AppColors.primaryLight)
                 )
 
             // キャプション
             if let caption = photo.caption {
                 Text(caption)
-                    .font(.caption2)
+                    .font(AppTypography.caption())
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(AppColors.textSecondary)
             }
 
             // 日付
             Text(photo.date, style: .date)
-                .font(.caption2)
-                .foregroundColor(.gray)
+                .font(AppTypography.caption())
+                .foregroundColor(AppColors.textSecondary)
         }
     }
 }
