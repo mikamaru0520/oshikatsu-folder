@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Query(sort: \Oshi.name) private var oshiList: [Oshi]
     @EnvironmentObject var store: AppStore
     @State private var showingRegisterSheet = false
 
@@ -18,7 +20,7 @@ struct ContentView: View {
                 VStack(spacing: 0) {
                     // カルーセル
                     OshiCarouselView(
-                        oshiList: store.state.oshiList,
+                        oshiList: oshiList,
                         onTap: { oshi in
                             store.send(.selectOshi(oshi))
                         }
@@ -36,14 +38,7 @@ struct ContentView: View {
                 }
                 .ignoresSafeArea(edges: .bottom)
             }
-            .navigationDestination(item: Binding(
-                get: { store.state.selectedOshi },
-                set: { newValue in
-                    if newValue == nil {
-                        store.send(.deselectOshi)
-                    }
-                }
-            )) { oshi in
+            .navigationDestination(item: $store.selectedOshi) { oshi in
                 OshiDetailView(oshi: oshi)
             }
             .sheet(isPresented: $showingRegisterSheet) {
@@ -55,6 +50,19 @@ struct ContentView: View {
 }
 
 #Preview {
+    @Previewable @State var container: ModelContainer = {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: Oshi.self, configurations: config)
+        return container
+    }()
+
+    @Previewable @State var store: AppStore = {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: Oshi.self, configurations: config)
+        return AppStore(modelContext: ModelContext(container))
+    }()
+
     ContentView()
-        .environmentObject(AppStore(initialState: AppState.preview))
+        .environmentObject(store)
+        .modelContainer(container)
 }

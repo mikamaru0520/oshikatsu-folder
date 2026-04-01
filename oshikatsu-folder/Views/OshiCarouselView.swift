@@ -111,8 +111,12 @@ struct OshiCardView: View {
 }
 
 #Preview {
+    // サンプルデータ
+    let sampleOshi1 = Oshi(name: "Sample 1", mainImageName: "star.fill", imageType: .icon)
+    let sampleOshi2 = Oshi(name: "Sample 2", mainImageName: "heart.fill", imageType: .icon)
+
     OshiCarouselView(
-        oshiList: AppState.preview.oshiList,
+        oshiList: [sampleOshi1, sampleOshi2],
         onTap: { _ in }
     )
 }

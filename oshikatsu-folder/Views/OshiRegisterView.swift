@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import PhotosUI
 
 /// 推し登録画面
@@ -202,6 +203,19 @@ struct OshiRegisterView: View {
 }
 
 #Preview {
+    @Previewable @State var container: ModelContainer = {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: Oshi.self, configurations: config)
+        return container
+    }()
+
+    @Previewable @State var store: AppStore = {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: Oshi.self, configurations: config)
+        return AppStore(modelContext: ModelContext(container))
+    }()
+
     OshiRegisterView()
-        .environmentObject(AppStore(initialState: AppState.preview))
+        .environmentObject(store)
+        .modelContainer(container)
 }

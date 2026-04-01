@@ -6,43 +6,43 @@
 //
 
 import Foundation
+import SwiftData
 import Combine
 
-/// MVI パターンの Store
-/// Intent を受け取り、State を更新する
+/// MVI パターンの Store（SwiftData対応）
+/// Intent を受け取り、SwiftDataを更新する
 @MainActor
 class AppStore: ObservableObject {
-    @Published private(set) var state: AppState
+    @Published var selectedOshi: Oshi?
+    private let modelContext: ModelContext
 
-    init(initialState: AppState = AppState()) {
-        self.state = initialState
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
     }
 
-    /// Intent を処理して状態を更新
+    /// Intent を処理
     func send(_ intent: AppIntent) {
         switch intent {
         case .idle:
             break
         case .selectOshi(let oshi):
-            updateState { state in
-                state.selectedOshi = oshi
-            }
+            selectedOshi = oshi
         case .deselectOshi:
-            updateState { state in
-                state.selectedOshi = nil
-            }
+            selectedOshi = nil
         case .addOshi(let name, let mainImageName, let imageType):
-            updateState { state in
-                let newOshi = Oshi(name: name, mainImageName: mainImageName, imageType: imageType, photos: [])
-                state.oshiList.append(newOshi)
-            }
+            let newOshi = Oshi(name: name, mainImageName: mainImageName, imageType: imageType, photos: [])
+            modelContext.insert(newOshi)
+            saveContext()
         }
     }
 
-    /// 状態を直接更新するためのプライベートメソッド
-    private func updateState(_ update: (inout AppState) -> Void) {
-        var newState = state
-        update(&newState)
-        state = newState
+    /// コンテキストを保存
+    private func saveContext() {
+        do {
+            try modelContext.save()
+            print("✅ SwiftDataに保存成功")
+        } catch {
+            print("❌ SwiftData保存エラー: \(error)")
+        }
     }
 }

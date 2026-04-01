@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// 推しの詳細画面
 struct OshiDetailView: View {
@@ -64,8 +65,9 @@ struct OshiDetailView: View {
 }
 
 #Preview {
+    @Previewable @State var sampleOshi = Oshi(name: "Sample Oshi", mainImageName: "star.fill", imageType: .icon)
+
     NavigationStack {
-        OshiDetailView(oshi: AppState.preview.oshiList[0])
-            .environmentObject(AppStore(initialState: AppState.preview))
+        OshiDetailView(oshi: sampleOshi)
     }
 }

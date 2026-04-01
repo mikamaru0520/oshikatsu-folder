@@ -70,7 +70,11 @@ struct PhotoItemView: View {
 }
 
 #Preview {
+    // サンプルデータ
+    let samplePhoto1 = Photo(imageName: "photo.fill", caption: "Sample 1")
+    let samplePhoto2 = Photo(imageName: "camera.fill", caption: "Sample 2")
+
     ScrollView {
-        PhotoGalleryView(photos: AppState.preview.oshiList[0].photos)
+        PhotoGalleryView(photos: [samplePhoto1, samplePhoto2])
     }
 }
