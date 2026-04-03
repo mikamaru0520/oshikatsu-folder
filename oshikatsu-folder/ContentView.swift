@@ -27,16 +27,12 @@ struct ContentView: View {
                     )
                 }
                 .padding(.top, 20)
-                .padding(.bottom, 80) // 下部メニュー分のスペースを確保
+                .padding(.bottom, 120) // フローティングボタン分のスペースを確保
 
-                // 下部メニューバー
-                VStack {
-                    Spacer()
-                    BottomMenuBar(onRegisterTap: {
-                        showingRegisterSheet = true
-                    })
-                }
-                .ignoresSafeArea(edges: .bottom)
+                // フローティングアクションボタン
+                BottomMenuBar(onRegisterTap: {
+                    showingRegisterSheet = true
+                })
             }
             .navigationDestination(item: $store.selectedOshi) { oshi in
                 OshiDetailView(oshi: oshi)
