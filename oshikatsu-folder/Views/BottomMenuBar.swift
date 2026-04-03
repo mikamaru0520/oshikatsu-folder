@@ -7,52 +7,56 @@
 
 import SwiftUI
 
-/// グラスモーフィズムスタイルの下部メニューバー
+/// フローティングアクションボタン付き下部メニューバー
 struct BottomMenuBar: View {
     let onRegisterTap: () -> Void
 
     var body: some View {
-        DSGlassContainer(padding: 0, cornerRadius: 0, intensity: .medium) {
-            HStack {
-                Spacer()
-
-                // 登録ボタン
-                Button(action: onRegisterTap) {
-                    VStack(spacing: AppSpacing.xs) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 32))
-                            .foregroundColor(AppColors.primary)
-
-                        Text("推しを登録")
-                            .font(AppTypography.caption())
-                            .fontWeight(.medium)
-                            .foregroundColor(AppColors.textPrimary)
-                    }
-                    .padding(.vertical, AppSpacing.sm)
-                    .padding(.horizontal, AppSpacing.xl)
+        ZStack(alignment: .bottom) {
+            // 下部バー（背景のみ）
+            DSGlassContainer(padding: 0, cornerRadius: 0, intensity: .medium) {
+                HStack {
+                    Spacer()
                 }
-
-                Spacer()
+                .frame(height: 80)
             }
-            .frame(height: 80)
-        }
-        .overlay(
-            // 上部の境界線
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color.white.opacity(0.8),
-                            Color.white.opacity(0.2)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
+            .overlay(
+                // 上部の境界線
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.8),
+                                Color.white.opacity(0.2)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                     )
-                )
-                .frame(height: 1),
-            alignment: .top
-        )
-        .lightShadow(radius: 10, y: -5)
+                    .frame(height: 1),
+                alignment: .top
+            )
+            .lightShadow(radius: 10, y: -5)
+
+            // フローティングアクションボタン
+            Button(action: onRegisterTap) {
+                HStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(AppColors.textWhite)
+
+                    Text("推しを登録")
+                        .font(AppTypography.headline())
+                        .foregroundColor(AppColors.textWhite)
+                }
+                .padding(.horizontal, AppSpacing.xl)
+                .padding(.vertical, AppSpacing.md)
+                .background(AppColors.primary)
+                .cornerRadius(AppShape.cornerRadiusXl)
+                .mediumShadow(radius: 15, y: 8)
+            }
+            .offset(y: -20) // ボタンを上に浮かせる
+        }
     }
 }
 
